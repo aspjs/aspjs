@@ -1,0 +1,25 @@
+{
+	"author": {
+		"name": "Patrik Simek",
+		"url": "https://patriksimek.cz"
+	},
+	"name": "aspjs",
+	"description": "Brings nodejs-like coding to ASP Classic.",
+	"keywords": [
+		"asp",
+		"classic",
+		"aspjs",
+		"adodb",
+		"iis"
+	],
+	"version": "0.1.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aspjs/aspjs"
+	},
+	"license": "MIT",
+	"dependencies": {},
+	"devDependencies": {},
+	"scripts": {},
+	"bin": {}
+}

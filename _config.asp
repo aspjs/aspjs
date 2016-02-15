@@ -1,0 +1,5 @@
+<%
+
+app.set('env', 'development');
+
+%>
