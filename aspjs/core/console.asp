@@ -8,7 +8,7 @@ var console;
 	
 	var Console = function Console() {};
 	Console.define({
-		file: 'console.asp'
+		file: '/aspjs/core/console.asp'
 	}, {
 		log: function log() {
 			var text = '<!-- [aspjs:log] '+ Array.prototype.slice.call(arguments, 0).map(function itemHandler(item) {

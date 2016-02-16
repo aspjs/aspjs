@@ -8,7 +8,7 @@ Brings nodejs-like coding to ASP Classic.
 - Server console.
 - Error stack traces.
 - Buffer support.
-- Asynchornous code support.
+- Asynchronous code support.
 - Built-in mssql, request, nodemailer.
 
 ## Quick Example
@@ -44,7 +44,7 @@ app.get('/', function(req, res, next) {
 
 ```asp
 <!--#INCLUDE VIRTUAL="/aspjs/head.asp"-->
-<!--#INCLUDE VIRTUAL="/modules/mssql.asp"-->
+<!--#INCLUDE VIRTUAL="/aspjs_modules/mssql/index.asp"-->
 <%
 
 var sql = require('mssql');
@@ -156,10 +156,16 @@ Implemented:
 
 Implemented:
 
-- new Buffer()
+- new Buffer(array)
+- new Buffer(buffer)
 - new Buffer(str[, encoding])
+- new Buffer(size)
+- Class Method: Buffer.concat(array)
 - Class Method: Buffer.isBuffer(obj)
+- Class Method: Buffer.isEncoding(encoding)
+- buffer.equals(buffer)
 - buffer.length
+- buffer.fill(value)
 - buffer.slice([start[, end]])
 - buffer.toString([encoding])
 
@@ -280,7 +286,10 @@ Implemented:
 <a name="http-request" />
 ### HTTP Request (inspired by [request](node request))
 
-```javascript
+```asp
+<!--#INCLUDE VIRTUAL="/aspjs_modules/request/index.asp"-->
+<%
+
 var request = require('request');
 request.get('http://...', function(err, response, body) {
 	// ... error checks
@@ -301,12 +310,17 @@ request.post({
 }, function(err, response, body) {
 	// ... error checks
 });
+
+%>
 ```
 
 <a name="mailer" />
 ### Mailer (inspired by [nodemailer](https://github.com/nodemailer/nodemailer))
 
-```javascript
+```asp
+<!--#INCLUDE VIRTUAL="/aspjs_modules/mailer/index.asp"-->
+<%
+
 var mailer = require('mailer');
 mailer.setup({
 	host: 'localhost',
@@ -334,12 +348,17 @@ mailer.send({
 }, function(err) {
 	// ... error checks
 });
+
+%>
 ```
 
 <a name="sql-server" />
 ### SQL Server (inspired by [node-mssql](https://github.com/patriksimek/node-mssql))
 
-```javascript
+```asp
+<!--#INCLUDE VIRTUAL="/aspjs_modules/mssql/index.asp"-->
+<%
+
 var sql = require('mssql');
 var conn = new sql.Connection({
 	user: '...',
@@ -364,6 +383,8 @@ var conn = new sql.Connection({
 		console.log(recordset);
 	});
 });
+
+%>
 ```
 
 <a name="license" />

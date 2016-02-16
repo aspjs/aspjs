@@ -1,7 +1,36 @@
 <%
 
 var Buffer = function Buffer(buffer, encoding) {
-	encoding = encoding || 'binary';
+	encoding = (encoding || 'binary').toLowerCase();
+	if (encoding === 'binary') {
+		if ('string' === typeof buffer) {
+			encoding = 'utf8';
+		} else if ('number' === typeof buffer) {
+			encoding = 'hex';
+			buffer = '00'.repeat(buffer);
+		} else if (Array.isArray(buffer)) {
+			encoding = 'hex';
+			buffer = buffer.map(function(octet) { return octet.toHex(); }).join('');
+		} else if (Buffer.isBuffer(buffer)) {
+			buffer = buffer._buffer;
+		};
+	};
+	
+	if (encoding === 'utf8' || encoding === 'utf-8') {
+		var hex = [];
+		for (var i = 0, l = buffer.length; i < l; i++) {
+			if (buffer.charCodeAt(i) <= 0x7F) {
+				hex.push(buffer.charCodeAt(i).toHex());
+			} else {
+				var uri = encodeURIComponent(buffer.charAt(i)).substr(1).split('%');
+				for (var ii = 0, ll = uri.length; ii < ll; ii++) {
+					hex.push(uri[ii]);
+				};
+			};
+		};
+		encoding = 'hex';
+		buffer = hex.join('');
+	};
 
 	switch (encoding) {
 		case 'binary':
@@ -29,7 +58,6 @@ var Buffer = function Buffer(buffer, encoding) {
 	};
 
 	if (this._buffer != null) {
-		console.log('asdf');
 		var stream = Server.createobject("ADODB.Stream");
 		stream.type = adTypeBinary;
 		stream.open();
@@ -42,8 +70,15 @@ var Buffer = function Buffer(buffer, encoding) {
 
 (function(){
 	Buffer.define({
-		file: 'buffer.asp'
+		file: '/aspjs/core/buffer.asp'
 	}, {
+		equals: function equals(buffer) {
+			return this.toString('hex') === buffer.toString('hex');
+		},
+		fill: function(value) {
+			this._buffer = new Buffer(value.toHex().repeat(this.length), 'hex')._buffer;
+			return this;
+		},
 		inspect: function inspect() {
 			var str = [], max = 50;
 			if (this.length > 0) {
@@ -67,7 +102,7 @@ var Buffer = function Buffer(buffer, encoding) {
 			return new Buffer(stream.read(length));
 		},
 		toString: function toString(encoding) {
-			encoding = encoding || 'utf8';
+			encoding = (encoding || 'utf8').toLowerCase();
 		
 			switch (encoding) {
 				case 'hex':
@@ -107,7 +142,18 @@ var Buffer = function Buffer(buffer, encoding) {
 	});
 	
 	Buffer.isBuffer = function isBuffer(obj) {
+		if (!obj || !obj.constructor) return false;
 		return obj.constructor.name() === 'Buffer';
+	};
+	
+	Buffer.isEncoding = function isEncoding(encoding) {
+		return encoding === 'binary' || encoding === 'utf8' || encoding === 'hex' || encoding === 'base64';
+	};
+	
+	Buffer.concat = function concat(list) {
+		return new Buffer(list.map(function(buffer) {
+			return buffer.toString('hex');
+		}).join(''), 'hex');
 	};
 })();
 

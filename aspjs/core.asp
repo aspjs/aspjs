@@ -2,7 +2,7 @@
 var __asp = __asp || {};
 
 ;(function(){
-	__asp.version = '0.1';
+	__asp.version = '0.2.0';
 	__asp.epoch = new Date().getTime();
 	__asp.master = true;
 	__asp.natives = {};
@@ -38,8 +38,9 @@ var __asp = __asp || {};
 	__asp.finalize = function finalize(forced) {
 		if (__asp.master || forced) {
 			__asp.info('rendered in '+ (Date.now() - __asp.epoch) +'ms');
-	
-			if (app.response.get('content-type') === 'text/html') {
+			
+			if (!app.response.headers['content-type']) app.response.set('content-type', 'text/html; charset=UTF-8');
+			if (app.get('env') !== 'production' && /^text\/html/.test(app.response.get('content-type'))) {
 				Response.write('<script type="text/javascript" src="/js/aspjs.js"></script>');
 				if (!console.flush) app.response.send(Session('__aspjs_console').join(''));
 			};
@@ -69,6 +70,11 @@ var __asp = __asp || {};
 		};
 	};
 	
+	if (__asp.forceMaster) {
+		__asp.master = true;
+		__asp.payload = undefined;
+	};
+	
 	if (epoch) {
 		__asp.epoch = epoch;
 	} else if (__asp.master) {
@@ -85,13 +91,15 @@ var __asp = __asp || {};
 <!--#INCLUDE FILE="core/array.asp"-->
 <!--#INCLUDE FILE="core/date.asp"-->
 <!--#INCLUDE FILE="core/string.asp"-->
+<!--#INCLUDE FILE="core/number.asp"-->
 <!--#INCLUDE FILE="core/regexp.asp"-->
 <!--#INCLUDE FILE="core/buffer.asp"-->
 <!--#INCLUDE FILE="core/async.asp"-->
 <!--#INCLUDE FILE="core/require.asp"-->
 <!--#INCLUDE FILE="modules/util.asp"-->
+<!--#INCLUDE FILE="modules/mime.asp"-->
+<!--#INCLUDE FILE="modules/events.asp"-->
 <!--#INCLUDE FILE="core/console.asp"-->
-<!--#INCLUDE FILE="core/events.asp"-->
 <!--#INCLUDE FILE="core/process.asp"-->
 <!--#INCLUDE FILE="core/timers.asp"-->
 <!--#INCLUDE FILE="core/app.asp"-->

@@ -1,10 +1,7 @@
 <%
 
-;(function(){
-	require.define({
-		name: 'util',
-		file: 'util.asp'
-	}, {
+require.define('util', 'util.asp', function(exports, module, __filename, __dirname){
+	module.exports = {
 		inherits: function inherits(child, parent) {
 			for (var key in parent) {
 				if (Object.prototype.hasOwnProperty.call(parent, key)) child[key] = parent[key];
@@ -83,9 +80,9 @@
 			};
 			return format(obj, 1, options.wrap || false);
 		}
-	});
-	
-	require.cache.util.defer = __asp.defer;
-})();
+	};
+});
+
+require.cache.util.defer = __asp.defer;
 
 %>

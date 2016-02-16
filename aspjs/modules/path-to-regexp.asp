@@ -1,14 +1,14 @@
 <%
 
-;(function(){
+require.define('path-to-regexp', 'path-to-regexp.asp', function(exports, module, __filename, __dirname){
 	/**
 	 * Expose `pathToRegexp`.
 	 */
-	require.cache['path-to-regexp'] = pathToRegexp
-	require.cache['path-to-regexp'].parse = parse
-	require.cache['path-to-regexp'].compile = compile
-	require.cache['path-to-regexp'].tokensToFunction = tokensToFunction
-	require.cache['path-to-regexp'].tokensToRegExp = tokensToRegExp
+	module.exports = pathToRegexp
+	module.exports.parse = parse
+	module.exports.compile = compile
+	module.exports.tokensToFunction = tokensToFunction
+	module.exports.tokensToRegExp = tokensToRegExp
 	
 	/**
 	 * The main path matching regexp utility.
@@ -388,6 +388,6 @@
 	
 	  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
 	}
-})();
+});
 
 %>

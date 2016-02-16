@@ -18,7 +18,11 @@ var app;
 			var req = Object.clone(this.request), res = Object.clone(this.response);
 			req.params = {};
 			res.render = function(url, locals) {
-				app.response.execute(url, {params: req.params, locals: locals});
+				if (/\.asp$/.test(url)) {
+					return this.execute(url, {params: app.request.params});
+				} else {
+					return app.response.render(url);
+				};
 			};
 			
 			matches = path.exec(this.request.url);

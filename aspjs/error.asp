@@ -1,3 +1,4 @@
+<% var __asp = {forceMaster: true}; %>
 <!--#INCLUDE FILE="head.asp"-->
 <%
 

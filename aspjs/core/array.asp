@@ -2,7 +2,7 @@
 
 ;(function(){
 	Array.define({
-		file: 'array.asp'
+		file: '/aspjs/core/array.asp'
 	}, {
 		filter: function filter(callback, context) {
 			var array = this.slice(0), filter = [];
@@ -28,7 +28,7 @@
 		
 			return map;
 		}
-	})
+	});
 	
 	Array.isArray = function isArray(arr) {
 		return Object.prototype.toString.call(arr) === '[object Array]';

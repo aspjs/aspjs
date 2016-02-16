@@ -2,9 +2,7 @@
 
 ;(function(){
 	app.response = {
-		headers: {
-			'content-type': 'text/html'
-		},
+		headers: {},
 		clear: function clear() {
 			Response.clear();
 			return this;
@@ -52,6 +50,7 @@
 			return this;
 		},
 		get: function(name) {
+			if (name.toLowerCase() === 'content-type' && !this.headers['content-type']) return 'text/html; charset=UTF-8';
 			return this.headers[name.toLowerCase()];
 		},
 		json: function json(json) {
@@ -71,6 +70,10 @@
 				Response.write(msg);
 			};
 			return this;
+		},
+		sendFile: function sendFile(path) {
+			this.set('content-type', require('mime').lookup(path));
+			Server.transfer(path);
 		},
 		set: function set(field, value) {
 			if ('object' === typeof field) {
@@ -108,7 +111,9 @@
 			return this;
 		},
 		render: function render(script) {
-			if (/\.html?$/.test(script)) {
+			if (/\.asp$/.test(script)) {
+				return this.execute(url, {params: app.request.params});
+			} else {
 				try {
 					Server.execute(script);
 				} catch (ex) {
@@ -117,8 +122,6 @@
 					throw ex;
 				};
 				return this;
-			} else {
-				return this.execute(url, {params: app.request.params});
 			};
 		},
 		transfer: function(path) {
