@@ -31,7 +31,7 @@ var app;
 				stack = Array.prototype.slice.call(arguments);
 				this.found = true;
 
-				async.forEachOf(keys, function(key, index, next) {
+				require('async').forEachOf(keys, function(key, index, next) {
 					if (params[key.name]) {
 						params[key.name](matches[index + 1], function(err, value) {
 							if (err) return next(err);

@@ -1,9 +1,7 @@
 <%
 
-var async;
-
-;(function(){
-	async = {
+require.define('async', 'async.asp', function(exports, module, __filename, __dirname){
+	module.exports = {
 		each: function each(array, iteratee, done) {
 			if (array.length === 0) return done(null);
 			for (var i = 0, l = array.length, d = l, e = null; i < l; i++) {
@@ -16,7 +14,6 @@ var async;
 				});
 			}
 		},
-		
 		forEachOf: function forEachOf(obj, iteratee, done) {
 			if (Array.isArray(obj)) {
 				if (obj.length === 0) return done(null);
@@ -32,6 +29,6 @@ var async;
 			};
 		}
 	};
-})();
+});
 
 %>

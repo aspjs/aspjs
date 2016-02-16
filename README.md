@@ -9,7 +9,7 @@ Brings nodejs-like coding to ASP Classic.
 - Error stack traces.
 - Buffer support.
 - Asynchronous code support.
-- Built-in mssql, request, nodemailer.
+- Built-in async, mssql, request, nodemailer.
 
 ## Quick Example
 
@@ -87,11 +87,11 @@ Content-Type: application/json
 
 ### API
 
+* [Async](#async)
 * [Application](#application)
 * [Buffer](#buffer)
 * [Console](#console)
 * [Events](#console)
-* [File System](#file-system)
 * [Globals](#globals)
 * [JSON](#json)
 * [Process](#process)
@@ -101,9 +101,12 @@ Content-Type: application/json
 
 ### Modules
 
-* [HTTP Request](#http-request)
-* [Mailer](#mailer)
-* [SQL Server](#sql-server)
+* [Assert](https://github.com/aspjs/aspjs-assert)
+* [Audit](https://github.com/aspjs/aspjs-audit)
+* [File System](https://github.com/aspjs/aspjs-fs)
+* [HTTP Request](https://github.com/aspjs/aspjs-request)
+* [Mailer](https://github.com/aspjs/aspjs-mailer)
+* [SQL Server](https://github.com/aspjs/aspjs-mssql)
 
 ## Debugging
 
@@ -137,6 +140,14 @@ console.log(myobject);
 ![aspjs inspect](https://patriksimek.cz/public/aspjs-inspect.png)
 
 ## API
+
+<a name="async" />
+### Async ([docs](https://github.com/caolan/async))
+
+Implemented:
+
+- async.each(arr, iteratee, callback)
+- async.forEachOf(obj, iteratee, callback)
 
 <a name="application" />
 ### Application ([docs](http://expressjs.com/en/4x/api.html#app))
@@ -189,22 +200,6 @@ Implemented:
 - emitter.on(event, listener)
 - emitter.once(event, listener)
 - emitter.removeListener(event, listener)
-
-<a name="file-system" />
-### File System ([docs](https://nodejs.org/api/fs.html))
-
-Implemented:
-
-- fs.readdir(path, callback)
-- fs.readdirSync(path)
-- fs.readFle(path[, options], callback)
-- fs.readFileSync(path[, options])
-- fs.stat(path, callback)
-- fs.statSync(path)
-- fs.writeFile(path, data[, options], callback)
-- fs.writeFileSync(path, data[, options])
-- fs.unlink(path, callback)
-- fs.unlinkSync(path)
 
 <a name="globals" />
 ### Globals ([docs](https://nodejs.org/api/globals.html))
@@ -280,112 +275,6 @@ Additions:
 Implemented:
 
 - util.inspect(object)
-
-## Modules
-
-<a name="http-request" />
-### HTTP Request (inspired by [request](node request))
-
-```asp
-<!--#INCLUDE VIRTUAL="/aspjs_modules/request/index.asp"-->
-<%
-
-var request = require("request");
-request.get("http://...", function(err, response, body) {
-	// ... error checks
-});
-
-request.post({
-	url: "http://...",
-	headers: {
-		"x-custom-header": "value"
-	},
-	body: "", // Object, String or Buffer
-	json: true,
-	auth: {
-		user: "username",
-		pass: "password"
-	},
-	timeout: 15000
-}, function(err, response, body) {
-	// ... error checks
-});
-
-%>
-```
-
-<a name="mailer" />
-### Mailer (inspired by [nodemailer](https://github.com/nodemailer/nodemailer))
-
-```asp
-<!--#INCLUDE VIRTUAL="/aspjs_modules/mailer/index.asp"-->
-<%
-
-var mailer = require("mailer");
-mailer.setup({
-	host: "localhost",
-	port: 25
-});
-mailer.send({
-	provider: "cdo", // "cdo" (default) or "persits"
-	from: "from@test.com",
-	to: "to@test.com",
-	cc: ["cc1@test.com", "cc2@test.com"],
-	bcc: null,
-	subject: "Subject",
-	text: "Body",
-	html: "<b>Body</b>",
-	attachments: [
-		{
-			path: "http://...", // Absolute path or URL
-			filename: "file.txt",
-			cid: "mycid"
-		}
-	],
-	headers: {
-		"x-custom-header": "value"
-	}
-}, function(err) {
-	// ... error checks
-});
-
-%>
-```
-
-<a name="sql-server" />
-### SQL Server (inspired by [node-mssql](https://github.com/patriksimek/node-mssql))
-
-```asp
-<!--#INCLUDE VIRTUAL="/aspjs_modules/mssql/index.asp"-->
-<%
-
-var sql = require("mssql");
-var conn = new sql.Connection({
-	user: "...",
-	password: "...",
-	server: "localhost",
-	database: "..."
-}, function(err) {
-	// ... error checks
-	
-	new sql.Request(conn)
-	.input("param", "asdfasdf")
-	.execute("test_sp", function(err, recordset, returnValue) {
-		// ... error checks
-		
-		console.log(recordset);
-	});
-	
-	new sql.Request(conn)
-	.query("select newid() as newid", function(err, recordset) {
-		// ... error checks
-		
-		console.log(recordset);
-	});
-});
-
-%>
-```
 
 <a name="license" />
 ## License

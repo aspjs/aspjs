@@ -2,7 +2,7 @@
 var __asp = __asp || {};
 
 ;(function(){
-	__asp.version = '0.2.0';
+	__asp.version = '0.2.1';
 	__asp.epoch = new Date().getTime();
 	__asp.master = true;
 	__asp.natives = {};
@@ -94,8 +94,8 @@ var __asp = __asp || {};
 <!--#INCLUDE FILE="core/number.asp"-->
 <!--#INCLUDE FILE="core/regexp.asp"-->
 <!--#INCLUDE FILE="core/buffer.asp"-->
-<!--#INCLUDE FILE="core/async.asp"-->
 <!--#INCLUDE FILE="core/require.asp"-->
+<!--#INCLUDE FILE="modules/async.asp"-->
 <!--#INCLUDE FILE="modules/util.asp"-->
 <!--#INCLUDE FILE="modules/mime.asp"-->
 <!--#INCLUDE FILE="modules/events.asp"-->

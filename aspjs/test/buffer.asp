@@ -1,4 +1,5 @@
 <!--#INCLUDE VIRTUAL="/aspjs/head.asp"-->
+<!--#INCLUDE VIRTUAL="/aspjs_modules/mocha/index.asp"-->
 <!--#INCLUDE VIRTUAL="/aspjs_modules/assert/index.asp"-->
 <%
 
