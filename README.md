@@ -18,11 +18,11 @@ Brings nodejs-like coding to ASP Classic.
 ```asp
 <%
 
-app.set('credentials', {
-	user: '...',
-	password: '...',
-	server: 'localhost',
-	database: '...'
+app.set("credentials", {
+	user: "...",
+	password: "...",
+	server: "localhost",
+	database: "..."
 });
 
 %>
@@ -33,8 +33,8 @@ app.set('credentials', {
 ```asp
 <%
 
-app.get('/', function(req, res, next) {
-	res.render('/index.asp');
+app.get("/", function(req, res, next) {
+	res.render("/index.asp");
 });
 
 %>
@@ -47,9 +47,9 @@ app.get('/', function(req, res, next) {
 <!--#INCLUDE VIRTUAL="/aspjs_modules/mssql/index.asp"-->
 <%
 
-var sql = require('mssql');
-var conn = new sql.Connection(app.get('dbconfig'), function(err) {
-	new sql.Request(conn).query('select getdate() as date', function(err, recordset) {
+var sql = require("mssql");
+var conn = new sql.Connection(app.get("dbconfig"), function(err) {
+	new sql.Request(conn).query("select getdate() as date", function(err, recordset) {
 		res.json(recordset);
 	});
 });
@@ -110,7 +110,7 @@ Content-Type: application/json
 <a name="debugging" />
 ### Console
 
-The entire contents of the console is redirected to browser's console. A simple page with `console.log('env', app.get('env'));` results in:
+The entire contents of the console is redirected to browser's console. A simple page with `console.log("env", app.get("env"));` results in:
 
 ![aspjs debugging](https://patriksimek.cz/public/aspjs-debugging.png)
 
@@ -290,21 +290,21 @@ Implemented:
 <!--#INCLUDE VIRTUAL="/aspjs_modules/request/index.asp"-->
 <%
 
-var request = require('request');
-request.get('http://...', function(err, response, body) {
+var request = require("request");
+request.get("http://...", function(err, response, body) {
 	// ... error checks
 });
 
 request.post({
-	url: 'http://...',
+	url: "http://...",
 	headers: {
-		'x-custom-header': 'value'
+		"x-custom-header": "value"
 	},
-	body: '', // Object, String or Buffer
+	body: "", // Object, String or Buffer
 	json: true,
 	auth: {
-		user: 'username',
-		pass: 'password'
+		user: "username",
+		pass: "password"
 	},
 	timeout: 15000
 }, function(err, response, body) {
@@ -321,29 +321,29 @@ request.post({
 <!--#INCLUDE VIRTUAL="/aspjs_modules/mailer/index.asp"-->
 <%
 
-var mailer = require('mailer');
+var mailer = require("mailer");
 mailer.setup({
-	host: 'localhost',
+	host: "localhost",
 	port: 25
 });
 mailer.send({
-	provider: 'cdo', // 'cdo' (default) or 'persits'
-	from: 'from@test.com',
-	to: 'to@test.com',
-	cc: ['cc1@test.com', 'cc2@test.com'],
+	provider: "cdo", // "cdo" (default) or "persits"
+	from: "from@test.com",
+	to: "to@test.com",
+	cc: ["cc1@test.com", "cc2@test.com"],
 	bcc: null,
-	subject: 'Subject',
-	text: 'Body',
-	html: '<b>Body</b>',
+	subject: "Subject",
+	text: "Body",
+	html: "<b>Body</b>",
 	attachments: [
 		{
-			path: 'http://...', // Absolute path or URL
-			filename: 'file.txt',
-			cid: 'mycid'
+			path: "http://...", // Absolute path or URL
+			filename: "file.txt",
+			cid: "mycid"
 		}
 	],
 	headers: {
-		'x-custom-header': 'value'
+		"x-custom-header": "value"
 	}
 }, function(err) {
 	// ... error checks
@@ -359,25 +359,25 @@ mailer.send({
 <!--#INCLUDE VIRTUAL="/aspjs_modules/mssql/index.asp"-->
 <%
 
-var sql = require('mssql');
+var sql = require("mssql");
 var conn = new sql.Connection({
-	user: '...',
-	password: '...',
-	server: 'localhost',
-	database: '...'
+	user: "...",
+	password: "...",
+	server: "localhost",
+	database: "..."
 }, function(err) {
 	// ... error checks
 	
 	new sql.Request(conn)
-	.input('param', 'asdfasdf')
-	.execute('test_sp', function(err, recordset, returnValue) {
+	.input("param", "asdfasdf")
+	.execute("test_sp", function(err, recordset, returnValue) {
 		// ... error checks
 		
 		console.log(recordset);
 	});
 	
 	new sql.Request(conn)
-	.query('select newid() as newid', function(err, recordset) {
+	.query("select newid() as newid", function(err, recordset) {
 		// ... error checks
 		
 		console.log(recordset);
