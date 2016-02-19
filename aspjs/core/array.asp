@@ -13,6 +13,13 @@
 		
 			return filter;
 		},
+		forEach: function map(callback, context) {
+			for (var i = 0, l = this.length; i < l; i++) {
+				callback.call(context, this[i], i, this);
+			}
+		
+			return this;
+		},
 		indexOf: function indexOf(item) {
 			for (var i = 0, l = this.length; i < l; i++) {
 				if (i in this && this[i] === item) return i;

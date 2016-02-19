@@ -1,6 +1,6 @@
 <%
 
-require.define('events', 'events.asp', function(exports, module, __filename, __dirname){
+define('events', function(require, exports, module){
 	var EventEmitter = function EventEmitter() {
 		this._events = {};
 	};

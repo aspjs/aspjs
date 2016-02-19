@@ -82,6 +82,7 @@ app.request = {
 	if (__asp.payload) {
 		app.request.script = __asp.payload.script;
 		app.request.parent = __asp.payload.parent;
+		app.request.params = __asp.payload.params;
 	};
 })();
 

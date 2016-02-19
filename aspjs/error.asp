@@ -2,8 +2,6 @@
 <!--#INCLUDE FILE="head.asp"-->
 <%
 
-__asp.info('uncaught exception');
-
 app.response.clear();
 app.response.status(500);
 
@@ -18,6 +16,8 @@ var error;
 		};
 		Session.contents.remove('__aspjs_error');
 	} else {
+		__asp.info('uncaught exception');
+		
 		last = Server.GetLastError();
 		if (last.number === 0) {
 			error = new Error('Unknown error.');

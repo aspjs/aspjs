@@ -1,6 +1,6 @@
 <%
 
-require.define('util', 'util.asp', function(exports, module, __filename, __dirname){
+define('util', function(require, exports, module){
 	module.exports = {
 		inherits: function inherits(child, parent) {
 			for (var key in parent) {

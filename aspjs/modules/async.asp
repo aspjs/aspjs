@@ -1,6 +1,6 @@
 <%
 
-require.define('async', 'async.asp', function(exports, module, __filename, __dirname){
+define('async', function(require, exports, module){
 	module.exports = {
 		each: function each(array, iteratee, done) {
 			if (array.length === 0) return done(null);

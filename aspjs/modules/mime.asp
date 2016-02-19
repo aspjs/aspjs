@@ -1,6 +1,6 @@
 <%
 
-require.define('mime', 'mime.asp', function(exports, module, __filename, __dirname){
+define('mime', function(require, exports, module){
 	module.exports = {
 		lookup: function lookup(path) {
 			var index = path.lastIndexOf('.');

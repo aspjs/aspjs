@@ -110,16 +110,27 @@
 			this.end();
 			return this;
 		},
-		render: function render(script) {
-			if (/\.asp$/.test(script)) {
-				return this.execute(url, {params: app.request.params});
+		render: function render(script, locals) {
+			var ext = script.match(/\.([^\.\\\/]+)$/), self = this;
+			if (ext) ext = ext[1];
+
+			if (ext === 'asp' || ext === 'inc') {
+				if (script.substr(0, 1) !== '/') script = app.get('views') +'/'+ script;
+				return this.execute(script, {params: app.request.params, locals: locals});
 			} else {
-				try {
-					Server.execute(script);
-				} catch (ex) {
-					ex = new Error('Failed to execute \''+ script +'\'. '+ ex.message);
-					ex.stack = ex.stack || Error.captureStackTrace();
-					throw ex;
+				if (app.engines[ext]) {
+					app.render(script, locals, function(err, data) {
+						if (err) return self.error(err);
+						self.send(data);
+					});
+				} else {
+					try {
+						Server.execute(script);
+					} catch (ex) {
+						ex = new Error('Failed to execute \''+ script +'\'. '+ ex.message);
+						ex.stack = ex.stack || Error.captureStackTrace();
+						throw ex;
+					};
 				};
 				return this;
 			};

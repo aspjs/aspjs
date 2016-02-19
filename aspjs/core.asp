@@ -1,8 +1,9 @@
 <%
+var global = this;
 var __asp = __asp || {};
 
 ;(function(){
-	__asp.version = '0.2.1';
+	__asp.version = '0.3.0';
 	__asp.epoch = new Date().getTime();
 	__asp.master = true;
 	__asp.natives = {};
@@ -41,7 +42,7 @@ var __asp = __asp || {};
 			
 			if (!app.response.headers['content-type']) app.response.set('content-type', 'text/html; charset=UTF-8');
 			if (app.get('env') !== 'production' && /^text\/html/.test(app.response.get('content-type'))) {
-				Response.write('<script type="text/javascript" src="/js/aspjs.js"></script>');
+				Response.write('<script type="text/javascript" src="/aspjs/client.js"></script>');
 				if (!console.flush) app.response.send(Session('__aspjs_console').join(''));
 			};
 			
@@ -99,6 +100,7 @@ var __asp = __asp || {};
 <!--#INCLUDE FILE="modules/util.asp"-->
 <!--#INCLUDE FILE="modules/mime.asp"-->
 <!--#INCLUDE FILE="modules/events.asp"-->
+<!--#INCLUDE FILE="modules/path.asp"-->
 <!--#INCLUDE FILE="core/console.asp"-->
 <!--#INCLUDE FILE="core/process.asp"-->
 <!--#INCLUDE FILE="core/timers.asp"-->
@@ -109,7 +111,7 @@ var __asp = __asp || {};
 if (__asp.introduce) {
 	__asp.info('asp.js v'+ __asp.version);
 	//__asp.info('open sessions: '+ Application('sessions'));
-	app.response.set('x-powered-by', 'asp.js v'+ __asp.version);
+	app.response.set('x-powered-by', app.get('x-powered-by'));
 };
 %>
 <!--#INCLUDE VIRTUAL="/_config.asp"-->

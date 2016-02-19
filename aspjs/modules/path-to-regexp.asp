@@ -1,6 +1,6 @@
 <%
 
-require.define('path-to-regexp', 'path-to-regexp.asp', function(exports, module, __filename, __dirname){
+define('path-to-regexp', function(require, exports, module){
 	/**
 	 * Expose `pathToRegexp`.
 	 */
