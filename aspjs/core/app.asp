@@ -1,8 +1,11 @@
 <%
 
 var app;
+var __app;
 
 (function(){
+	if (__asp.payload && __asp.payload.app) return app = __app = __asp.payload.app;
+
 	var params = {};
 	var settings = {
 		env: 'development',
@@ -11,7 +14,7 @@ var app;
 		'x-powered-by': 'asp.js v'+ __asp.version
 	};
 
-	app = {
+	app = __app = {
 		found: false,
 		engines: {},
 		all: function all() {
@@ -19,16 +22,8 @@ var app;
 			
 			var keys = [], route = Array.prototype.shift.call(arguments);
 			var path = require('path-to-regexp')(route, keys);
-			var req = Object.clone(this.request), res = Object.clone(this.response);
-			req.params = {};
-			res.render = function render(script, locals) {
-				if (/\.(asp|inc)$/.test(script)) {
-					return this.execute(script, {params: req.params, locals: locals});
-				} else {
-					return app.response.render(script, locals);
-				};
-			};
-			
+			var req = this.request, res = this.response;
+
 			matches = path.exec(this.request.url);
 			if (matches) {
 				__asp.info('routing to '+ route);
@@ -47,15 +42,12 @@ var app;
 						next();
 					};
 				}, function(err) {
-					if (err) return app.response.error(err);
+					if (err) return __app.response.error(err);
 					
 					next = function(err) {
-						if (err) return app.response.error(err);
-						if (stack.length === 0) {
-							app.response.transfer(404);
-							return;
-						};
-						
+						if (err) return __app.response.error(err);
+						if (stack.length === 0) return;
+
 						stack.shift().call(null, req, res, next);
 					};
 					next();
@@ -92,9 +84,9 @@ var app;
 			var ext = script.match(/\.([^\.\\\/]+)$/), self = this;
 			if (ext) ext = ext[1];
 
-			if (app.engines[ext]) {
+			if (__app.engines[ext]) {
 				if (script.substr(0, 1) !== '/') script = this.get('views') +'/'+ script;
-				app.engines[ext](script, {globals: locals || {}}, callback);
+				__app.engines[ext](script, {globals: locals || {}}, callback);
 			} else {
 				util.defer(callback, new Error("No engine to process '"+ ext +"' files."));
 			};

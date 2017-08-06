@@ -36,7 +36,16 @@ define('util', function(require, exports, module){
 								}
 							};
 						};
-						return '[function '+ (obj.name() || '<anonymous>') +']'
+						try {
+							return '[function '+ (obj.name() || '<anonymous>') +']'
+						} catch (ex) {
+							if (ex.number === -2146823277) {
+								// Can't execute code from a freed script
+								return '[freed function]';
+							} else {
+								throw ex;
+							}
+						}
 					case 'object':
 						if (!obj) {
 							return 'null';
@@ -82,7 +91,5 @@ define('util', function(require, exports, module){
 		}
 	};
 });
-
-require.cache.util.defer = __asp.defer;
 
 %>

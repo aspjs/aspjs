@@ -33,14 +33,7 @@
 		var txt = [], fce = arguments.callee.caller, seen = [], circular = false;
 		while (fce) {
 			seen.push(fce);
-			
-			if (fce === __asp.dispatchDeferred) {
-				txt.push('     <async>');
-				txt.push(fce.arguments[0].replace(/\n  at <global>$/, ''));
-			} else if (fce !== __asp.defer) {
-				txt.push(fce.toStack());
-			};
-			
+			txt.push(fce.toStack());
 			fce = fce.caller;
 			if (fce && seen.indexOf(fce) !== -1) {
 				circular = true;

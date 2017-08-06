@@ -8,8 +8,8 @@ Brings nodejs-like coding to ASP Classic.
 - Server console.
 - Error stack traces.
 - Buffer support.
-- Asynchronous code support.
-- Built-in async, mssql, request, nodemailer.
+- Callback-style code support.
+- Built-in async, mssql, request, nodemailer, sessions, cookies.
 
 ## Quick Example
 
@@ -94,6 +94,7 @@ Content-Type: application/json
 * [Events](#console)
 * [Globals](#globals)
 * [JSON](#json)
+* [Path](#path)
 * [Process](#process)
 * [Request](#request)
 * [Response](#response)
@@ -206,12 +207,8 @@ Implemented:
 
 Implemented:
 
-- clearImmediate(timer)
-- clearTimeout(timer)
 - require.cache
 - require(module)
-- setImmediate(callback)
-- setTimeout(callback, ms)
 
 <a name="json" />
 ### JSON ([docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON))
@@ -220,6 +217,13 @@ Implemented:
 
 - Class Method: JSON.parse(string[, reviver])
 - Class Method: JSON.stringify(value[, replacer[, space]])
+
+<a name="path" />
+### Util ([docs](https://nodejs.org/api/path.html))
+
+Implemented:
+
+- path.basename(path)
 
 <a name="process" />
 ### Process ([docs](https://nodejs.org/api/process.html))
@@ -241,10 +245,12 @@ Implemented:
 - req.hostname
 - req.ip
 - req.method
+- req.params
 - req.port
 - req.protocol
 - req.query
 - req.secure
+- req.session
 - req.url
 - req.xhr
 
@@ -253,6 +259,7 @@ Implemented:
 
 Implemented:
 
+- res.cookie(name, value, [options])
 - res.end([data])
 - res.get(name)
 - res.json(body)

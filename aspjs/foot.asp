@@ -1,5 +1,5 @@
 <%
 
-__asp.dispatchDeferred();
+__asp.finalize();
 
 %>

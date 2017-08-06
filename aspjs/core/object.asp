@@ -1,6 +1,16 @@
 <%
 
 ;(function(){
+	Object.assign = function assign(target) {
+		if (!target) throw new TypeError('Cannot convert undefined or null to object.');
+		for (var i = 1, l = arguments.length; i < l; i++) {
+			for (var key in arguments[i]) {
+				target[key] = arguments[i][key];
+			}
+		}
+		return target;
+	};
+
 	Object.keys = function keys(obj) {
 		var res = [];
 		for (var prop in obj) {

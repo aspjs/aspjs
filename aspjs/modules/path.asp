@@ -2,7 +2,11 @@
 
 define('path', function(require, exports, module){
 	module.exports = {
-		sep: '\\'
+		sep: '\\',
+		
+		basename: function(path) {
+			return String(path).match(/(?:^|\\|\/)([^\\\/]*)[\\\/]?$/)[1];
+		}
 	};
 });
 

@@ -1,11 +1,24 @@
 <%
+(function(){
+	if (__app.response) return;
 
-;(function(){
-	app.response = {
+	__app.response = {
 		headers: {},
 		clear: function clear() {
 			Response.clear();
 			return this;
+		},
+		cookie: function cookie(name, value, options) {
+			var keys = [];
+			keys.push(encodeURIComponent(name) +'='+ encodeURIComponent(value));
+			keys.push('Path=/');
+
+			if (options.maxAge) keys.push('Max-Age='+ (options.maxAge / 1000));
+			if (options.httpOnly) keys.push('HttpOnly');
+			if (options.secure) keys.push('Secure');
+			if (options.domain) keys.push('Domain='+ encodeURIComponent(options.domain));
+
+			this.set('set-cookie', keys.join('; '));
 		},
 		end: function end(msg) {
 			if (msg) this.send(msg);
@@ -15,7 +28,7 @@
 		},
 		error: function error(err) {
 			this.clear();
-			this.status(500);
+			this.status(400);
 			err.name = err.name; // make name enumerable
 			Session('__aspjs_error') = err;
 			Response.end();
@@ -24,7 +37,9 @@
 		execute: function execute(script, options) {
 			__asp.info('executing '+ script);
 			try {
-				options.parent = app.request.script;
+				options = options || {};
+				options.app = __app;
+				options.parent = __script.name;
 				options.script = script;
 				Session('__aspjs_execute') = options;
 				Server.execute(script);
@@ -32,15 +47,6 @@
 				ex = new Error('Failed to execute \''+ script +'\'. '+ ex.message);
 				ex.stack = ex.stack || Error.captureStackTrace();
 				throw ex;
-			};
-			var payload = Session('__aspjs_executed');
-			if (payload) {
-				if (payload.headers) {
-					for (var name in payload.headers) {
-						app.response.headers[name] = payload.headers[name];
-					};
-				};
-				Session.Contents.Remove('__aspjs_executed');
 			};
 			__asp.info('executed '+ script);
 			return this;
@@ -54,7 +60,7 @@
 			return this.headers[name.toLowerCase()];
 		},
 		json: function json(json) {
-			this.set('content-type', 'application/json');
+			this.set('content-type', 'application/json; charset=utf-8');
 			this.send(JSON.stringify(json));
 			this.end();
 			return this;
@@ -88,6 +94,8 @@
 			return this;
 		},
 		status: function status(code) {
+			if (!code) return parseInt(Response.Status);
+			
 			switch (parseInt(code)) {
 				case 301: Response.Status = "301 Moved Permanently"; return this;
 				case 302: Response.Status = "302 Found"; return this;
@@ -112,14 +120,22 @@
 		},
 		render: function render(script, locals) {
 			var ext = script.match(/\.([^\.\\\/]+)$/), self = this;
-			if (ext) ext = ext[1];
+			if (ext) {
+				ext = ext[1];
+			} else {
+				ext = 'asp';
+				script += '.asp';
+			}
+			
+			if (script.substr(0, 1) !== '/') script = __app.get('views') +'/'+ script;
 
 			if (ext === 'asp' || ext === 'inc') {
-				if (script.substr(0, 1) !== '/') script = app.get('views') +'/'+ script;
-				return this.execute(script, {params: app.request.params, locals: locals});
+				return this.execute(script, {
+					locals: locals
+				});
 			} else {
-				if (app.engines[ext]) {
-					app.render(script, locals, function(err, data) {
+				if (__app.engines[ext]) {
+					__app.render(script, locals, function(err, data) {
 						if (err) return self.error(err);
 						self.send(data);
 					});
@@ -143,7 +159,7 @@
 			} else {
 				__asp.info('transfering to '+ script);
 				try {
-					options.parent = app.request.script;
+					options.parent = __script.name;
 					options.script = script;
 					Session('__aspjs_transfer') = options;
 					Server.transfer(script);

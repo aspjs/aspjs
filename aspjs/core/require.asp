@@ -8,6 +8,8 @@ var require = function require(module) {
 require.cache = {};
 
 var define = function define(name, factory) {
+	if (require.cache[name]) return;
+	
 	var module = {exports: {}};
 	factory(require, module.exports, module, Server.mapPath('/aspjs_modules/'+ name +'/index.asp'), Server.mapPath('/aspjs_modules/'+ name));
 	require.cache[name] = module.exports;

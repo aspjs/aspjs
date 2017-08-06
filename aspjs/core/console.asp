@@ -3,7 +3,7 @@
 var console;
 
 (function(){
-	var buffer = Session('__aspjs_console') || [];
+	var buffer = Session('__aspjs_console') = Session('__aspjs_console') || [];
 	var util = require('util');
 	
 	var Console = function Console() {};
@@ -17,7 +17,6 @@ var console;
 			
 			buffer.push(text);
 			if (this.flush) Response.Write(text);
-			Session('__aspjs_console') = buffer;
 		},
 		warn: function warn() {
 			var text = '<!-- [aspjs:warn] '+ Array.prototype.slice.call(arguments, 0).map(function itemHandler(item) {
@@ -26,7 +25,6 @@ var console;
 			
 			buffer.push(text);
 			if (this.flush) Response.Write(text);
-			Session('__aspjs_console') = buffer;
 		},
 		error: function error() {
 			var text = '<!-- [aspjs:error] '+ Array.prototype.slice.call(arguments, 0).map(function itemHandler(item) {
@@ -35,7 +33,14 @@ var console;
 			
 			buffer.push(text);
 			if (this.flush) Response.Write(text);
-			Session('__aspjs_console') = buffer;
+		},
+		sql: function error() {
+			var text = '<!-- [aspjs:sql] '+ Array.prototype.slice.call(arguments, 0).map(function itemHandler(item) {
+				return util.inspect(item);
+			}).join(' ') +' -->\n';
+			
+			buffer.push(text);
+			if (this.flush) Response.Write(text);
 		}
 	});
 	
@@ -49,7 +54,6 @@ var console;
 		
 		buffer.push(text);
 		if (this.flush) Response.Write(text);
-		Session('__aspjs_console') = buffer;
 	};
 })();
 

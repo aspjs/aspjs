@@ -101,6 +101,9 @@ var Buffer = function Buffer(buffer, encoding) {
 			stream.position = start;
 			return new Buffer(stream.read(length));
 		},
+		toByteArray: function toByteArray() {
+			return this.toString('hex').match(/.{2}/g).map(function(char) { return parseInt(char, 16) });
+		},
 		toString: function toString(encoding) {
 			encoding = (encoding || 'utf8').toLowerCase();
 		

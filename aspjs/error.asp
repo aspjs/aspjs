@@ -1,15 +1,23 @@
-<% var __asp = {forceMaster: true}; %>
+<%
+
+Session.contents.remove('__aspjs_execute');
+Session.contents.remove('__aspjs_transfer');
+Session.Contents.Remove('__aspjs_globals');
+
+var __asp = {forceMaster: true};
+
+%>
 <!--#INCLUDE FILE="head.asp"-->
 <%
 
 app.response.clear();
-app.response.status(500);
 
 var error;
 
 ;(function(){
 	var last = Session('__aspjs_error');
 	if (last) {
+		app.response.status(400);
 		error = new (__asp.natives[last.name || 'Error'])(last.message);
 		for (var key in last) {
 			if ('function' !== typeof last[key]) error[key] = last[key];
@@ -17,6 +25,7 @@ var error;
 		Session.contents.remove('__aspjs_error');
 	} else {
 		__asp.info('uncaught exception');
+		app.response.status(500);
 		
 		last = Server.GetLastError();
 		if (last.number === 0) {
